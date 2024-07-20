@@ -8,7 +8,11 @@ mongoose.connect(
 );
 
 const userSchema = new Schema({
-  userName: {
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
     type: String,
     required: true,
   },
@@ -23,7 +27,7 @@ const userSchema = new Schema({
   role: {
     type: String,
     required: true,
-    enum: ["Admin", "User"],
+    enum: ["Adopter", "Rehomer"],
   },
   createdAt: {
     type: Date,
@@ -38,6 +42,53 @@ const userSchema = new Schema({
     },
     lastSeen: Date,
   },
+});
+
+const adoptionUserDetailsSchema = new Schema({
+  userId: { type: Schema.Types.ObjectId, required: true },
+  address: {
+    addressLine1: { type: String, required: true },
+    addressLine2: { type: String },
+    town: { type: String, required: true },
+    pinCode: { type: Number, required: true },
+    mobileOrTelephone: { type: String, required: true },
+  },
+  above18: { type: Boolean, required: true },
+  livingSituation: {
+    type: String,
+    enum: ["rented", "own", "other"],
+    required: true,
+  },
+  gardenavailable: { type: Boolean, required: true },
+  houseHoldSiting: {
+    type: String,
+    enum: ["rural", "town", "city"],
+    required: true,
+  },
+  activityLevel: {
+    type: String,
+    enum: ["quiet", "normal", "loud"],
+    required: true,
+  },
+  homeImage: [{ type: String, required: true }],
+  noOfAdults: { type: Number, required: true },
+  noOfChildren: { type: Number, required: true },
+  anyVisitingChildren: [
+    {
+      age: { type: Number },
+    },
+  ],
+  anyoneAllergyToPets: { type: Boolean, required: true },
+  anotherAnimal: {
+    nurtured: { type: Boolean }, // if the animal is nurtured
+    vaccinated: { type: Boolean }, // if the animal is vaccinated in the last 12 months
+    type: { type: String }, // type of animal
+  },
+  lifestylePatterns: { type: String, required: true, maxlength: 200 },
+  planningToMoveIn6Months: { type: Boolean, required: true },
+  anyHolidayNext3Months: { type: Boolean, required: true },
+  suitableTransportForAnimal: { type: Boolean, required: true },
+  describeExperienceWithAnimals: { type: String, required: true },
 });
 
 const petSchema = new Schema({
@@ -216,6 +267,28 @@ const adoptionDetailsSchema = new Schema({
   },
 });
 
+// Method to generate a hash from plain text
+userSchema.methods.createHash = async function (plainTextPassword) {
+  // Hashing user's salt and password with 10 iterations,
+  const saltRounds = 10;
+
+  // First method to generate a salt and then create hash
+  const salt = await bcrypt.genSalt(saltRounds);
+  return await bcrypt.hash(plainTextPassword, salt);
+
+  // Second mehtod - Or we can create salt and hash in a single method also
+  // return await bcrypt.hash(plainTextPassword, saltRounds);
+};
+
+// Validating the candidate password with stored hash and hash function
+userSchema.methods.validatePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password_hash);
+};
+
+const AdoptionUserDetails = mongoose.model(
+  "AdoptionUserDetails",
+  adoptionUserDetailsSchema
+);
 const AdoptionDetails = mongoose.model(
   "AdoptionDetails",
   adoptionDetailsSchema
@@ -235,4 +308,5 @@ export {
   PetFeatures,
   Report,
   AdoptionDetails,
+  AdoptionUserDetails,
 };
