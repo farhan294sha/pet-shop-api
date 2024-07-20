@@ -216,9 +216,10 @@ const adoptionDetailsSchema = new Schema({
   },
 });
 
-
-
-const AdoptionDetails = mongoose.model("AdoptionDetails", adoptionDetailsSchema)
+const AdoptionDetails = mongoose.model(
+  "AdoptionDetails",
+  adoptionDetailsSchema
+);
 const Report = mongoose.model("Report", reportSchema);
 const PetFeatures = mongoose.model("PetFeatures", petFeaturesSchema);
 const Conversation = mongoose.model("Conversation", conversationSchema);
