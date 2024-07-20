@@ -216,6 +216,8 @@ const adoptionDetailsSchema = new Schema({
   },
 });
 
+
+
 const AdoptionDetails = mongoose.model("AdoptionDetails", adoptionDetailsSchema)
 const Report = mongoose.model("Report", reportSchema);
 const PetFeatures = mongoose.model("PetFeatures", petFeaturesSchema);
@@ -224,4 +226,12 @@ const Message = mongoose.model("Message", messageSchema);
 const User = mongoose.model("User", userSchema);
 const Pet = mongoose.model("Pet", petSchema);
 
-export { User, Pet, Conversation, Message, PetFeatures, Report };
+export {
+  User,
+  Pet,
+  Conversation,
+  Message,
+  PetFeatures,
+  Report,
+  AdoptionDetails,
+};
