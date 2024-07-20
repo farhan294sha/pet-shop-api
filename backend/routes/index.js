@@ -1,6 +1,6 @@
 import express from "express";
-import petRouter from "./pet";
-import userRouter from "./user"
+import {default as petRouter }from "./pet.js";
+import {default as userRouter} from "./user.js"
 
 const router = express.Router();
 

@@ -1,12 +1,12 @@
 import express from "express";
 import bodyParser from "body-parser";
-import rootRouter from "./routes";
-import cors from "cors"
+import { default as rootRouter } from "./routes/index.js";
+import cors from "cors";
 
 const app = express();
 const port = 3000;
 
-app.use(cors())
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

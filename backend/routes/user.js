@@ -1,6 +1,6 @@
 import express from "express";
 import z from "zod";
-import { User } from "../db";
+import { User } from "../db/index.js";
 import jwt from "jsonwebtoken";
 import env from "dotenv";
 env.config();
